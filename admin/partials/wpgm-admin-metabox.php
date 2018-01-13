@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Provides the markup for metabox
  *
@@ -10,7 +10,7 @@
  */
 ?>
 <h4>
-    <?php _e( 'Entrez une adresse postale pour l\'afficher sur la carte.', $this->plugin_name ) ?>        
+    <?php _e( 'Entrez une adresse postale pour l\'afficher sur la carte.', $this->plugin_name ) ?>
 </h4>
 
 <div style="padding-bottom: 20px;" class="wpgm_admin_map">
@@ -21,7 +21,7 @@
     <tr>
         <th scope="row" style="text-align: right;">
             <label for="wpgm_address">
-                <?php _e( 'Addresse', $this->plugin_name ) ?>        
+                <?php _e( 'Adresse', $this->plugin_name ) ?>
             </label>
         </th>
         <td>
@@ -29,11 +29,11 @@
             <input type="text" id="wpgm_address" name="wpgm_address" size="60" value="<?php echo sanitize_text_field( $fields['address'] ); ?>" />
 
             <a id="wpgm_address_search_submit" class="button" />
-                <?php _e( 'Rechercher', $this->plugin_name ) ?>        
+                <?php _e( 'Rechercher', $this->plugin_name ) ?>
             </a>
 
             <a id="wpgm_address_clear" class="button" />
-                <?php _e( 'Effacer', $this->plugin_name ) ?>        
+                <?php _e( 'Effacer', $this->plugin_name ) ?>
             </a>
 
             <input type="hidden" id="wpgm_latitude" name="wpgm_latitude" value="<?php echo sanitize_text_field( $fields['latitude'] ); ?>" />

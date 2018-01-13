@@ -80,9 +80,9 @@ class WPGM_Public {
      * @return      string       A string of html markup on success, empty on failure
      */
     public function wpgm_shortcode( $atts ) {
-        
+
         $map = '';
-        
+
         // Set our shortcode args blank if not passed in
         extract( shortcode_atts( array(
             'height'    => '',
@@ -100,10 +100,10 @@ class WPGM_Public {
         $this->enqueue_scripts( $city, $category, $id );
 
         // Generate our base map markup to return
-        $map = WPGM_Helper::map_markup( 
-            array( 
-                'height'    => $height, 
-                'width'     => $width 
+        $map = WPGM_Helper::map_markup(
+            array(
+                'height'    => $height,
+                'width'     => $width
             ),
             $this->getCity(),
             $filter,
@@ -117,22 +117,22 @@ class WPGM_Public {
 
     /**
      * Set city
-     * 
+     *
      * @param       $value
      */
     public function setCity( $value ) {
-        
+
         $this->city = $value;
     }
 
 
     /**
      * Get city
-     * 
+     *
      * @param       $value
      */
     public function getCity() {
-        
+
         return $this->city;
     }
 
@@ -141,62 +141,40 @@ class WPGM_Public {
      * Enqueue script
      */
     function enqueue_scripts( $city, $category = array(), $id = array() ) {
-        
+
         wp_enqueue_script( 'google-maps' );
         // wp_enqueue_script( 'jquery-ui-maps' );
         wp_enqueue_script( $this->plugin_name );
 
-        wp_localize_script( 
-            $this->plugin_name, 
-            $this->plugin_name . '_ajax', 
-            array( 
-                'ajax_url'  => admin_url( 'admin-ajax.php' ), 
+        wp_localize_script(
+            $this->plugin_name,
+            $this->plugin_name . '_ajax',
+            array(
+                'ajax_url'  => admin_url( 'admin-ajax.php' ),
                 'city'      => $city,
                 'category'  => $category,
                 'id'        => $id,
-            ) 
+            )
         );
     }
 
 
     /**
-     * Enqueue script
-     */
-    function localize_script( $city, $category = array(), $id = array() ) {
-        
-        wp_enqueue_script( 'google-maps' );
-        // wp_enqueue_script( 'jquery-ui-maps' );
-        wp_enqueue_script( $this->plugin_name );
-
-        wp_localize_script( 
-            $this->plugin_name, 
-            $this->plugin_name . '_ajax', 
-            array( 
-                'ajax_url'  => admin_url( 'admin-ajax.php' ), 
-                'city'      => $city,
-                'category'  => $category,
-                'id'        => $id,
-            ) 
-        );
-    }
-
-
-    /** 
      * wpgm_get_markers
      */
     function wpgm_get_markers(){
 
         $list_markers = [];
 
-         $args = array( 
-            'posts_per_page'    => -1, 
+         $args = array(
+            'posts_per_page'    => -1,
             'post_type'         => $this->default_post_types,
             'post_status'       => 'publish',
         );
 
          // ID
          if ( isset( $_POST['id'] ) && ! empty( $_POST['id']) ) {
-             
+
              $args['post__in'] = array( $_POST['id'] );
          }
 
@@ -230,16 +208,16 @@ class WPGM_Public {
         $query = new WP_Query( $args );
 
         if( $query->found_posts >= 1 ) {
-            
+
             while ( $query->have_posts() ) {
-                
+
                 $query->the_post();
-                
+
                 // Coordinate
                 $coordinates = get_post_meta( $query->post->ID, '_' . $this->plugin_name . '_details', true);
 
                 // print_r($coordinates);
-                
+
                 // If post has latitude and longitude attach
                 if ( ! empty ( $coordinates ) ) {
 
@@ -257,7 +235,7 @@ class WPGM_Public {
                         $filters = [];
 
                         // Make an array of all categories
-                        foreach( $categories as $category ) { 
+                        foreach( $categories as $category ) {
 
                             array_push( $post_categories, $category->slug );
                             array_push( $filters, $category->slug );
@@ -270,10 +248,10 @@ class WPGM_Public {
                         // Date in category
                         if( have_rows( 'dates', $query->post->ID ) ) {
 
-                            while ( have_rows( 'dates', $query->post->ID ) ) { 
+                            while ( have_rows( 'dates', $query->post->ID ) ) {
                                 the_row();
 
-                                $unixtimestamp = strtotime( get_sub_field( 'date' ) ); 
+                                $unixtimestamp = strtotime( get_sub_field( 'date' ) );
 
                                 $current_date = date_i18n( $day_format, $unixtimestamp );
 
@@ -283,20 +261,20 @@ class WPGM_Public {
                                 }
                             }
                         }
-                        
+
 
                         // Empty array for date output
                         $post_dates = [];
-                        
+
                         if( have_rows( 'dates', $query->post->ID ) ) {
 
-                            while ( have_rows( 'dates', $query->post->ID ) ) { 
+                            while ( have_rows( 'dates', $query->post->ID ) ) {
 
                                 the_row();
 
                                 // $date = get_sub_field( 'date' );
 
-                                $unixtimestamp = strtotime( get_sub_field( 'date' ) ); 
+                                $unixtimestamp = strtotime( get_sub_field( 'date' ) );
 
                                 $output  = '<span class="Date-event uppercase">';
                                 $output .= date_i18n( $day_format, $unixtimestamp );
@@ -315,8 +293,8 @@ class WPGM_Public {
                         $permalink = get_the_permalink( $query->post->ID );
 
                         // Marker informations
-                        $marker_infos = apply_filters( 
-                            $this->plugin_name . '_get_gmap_marker_infos', 
+                        $marker_infos = apply_filters(
+                            $this->plugin_name . '_get_gmap_marker_infos',
                             array(
                                 'title'     => $query->post->post_title,
                                 'permalink' => $permalink,
@@ -326,12 +304,12 @@ class WPGM_Public {
                                 'filters'   => $filters,
                                 'address'   => get_wpgm_address( $query->post->ID ),
                                 'thumbnail' => $thumbnail
-                            )   
+                            )
                         );
 
                         $marker = array(
                             'coordinates' => array(
-                                'latitude'  => $coordinates['latitude'], 
+                                'latitude'  => $coordinates['latitude'],
                                 'longitude' => $coordinates['longitude']
                             )
                         );
@@ -340,13 +318,13 @@ class WPGM_Public {
 
                         array_push( $list_markers, $marker );
                     }
-                }  
+                }
             }
             wp_reset_postdata();
         }
 
         echo wp_json_encode( array( 'markers' => $list_markers ) );
-        
+
         wp_die();
     }
 }

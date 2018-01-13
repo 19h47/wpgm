@@ -70,9 +70,9 @@ class WPGM {
         $this->plugin_name = 'wpgm';
         $this->version = '1.0.0';
 
-        $this->gmap = array( 
-            'version'   => '3.27', 
-            'key'       => 'AIzaSyARcbB73-4Xmg9vSkA30EUxslzgvnRsrQY' 
+        $this->gmap = array(
+            'version'   => '3.27',
+            'key'       => 'AIzaSyARcbB73-4Xmg9vSkA30EUxslzgvnRsrQY'
         );
 
         $this->geographical_coordinates = array(
@@ -81,7 +81,7 @@ class WPGM {
         );
 
         $this->default_post_types = array( 'event' );
-        
+
         $this->load_dependencies();
         $this->define_admin_hooks();
         $this->define_public_hooks();
@@ -109,14 +109,14 @@ class WPGM {
     private function load_dependencies() {
 
         /**
-         * The class responsible for orchestrating the actions and filters of 
+         * The class responsible for orchestrating the actions and filters of
          * the core plugin.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpgm-loader.php';
 
 
         /**
-         * The class responsible for defining all actions that occur in the 
+         * The class responsible for defining all actions that occur in the
          * admin area.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wpgm-admin.php';
@@ -129,15 +129,15 @@ class WPGM {
 
 
         /**
-         * The class responsible for defining all actions that occur in the 
+         * The class responsible for defining all actions that occur in the
          * public-facing side of the site.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wpgm-public.php';
-        
+
 
         $this->loader = new WPGM_Loader();
     }
-    
+
 
     /**
      * Register all of the hooks related to the admin area functionality
@@ -148,27 +148,27 @@ class WPGM {
      */
     private function define_admin_hooks() {
 
-        $plugin_admin = new WPGM_Admin( 
-            $this->get_plugin_name(), 
-            $this->get_version(), 
-            $this->get_latitude(), 
-            $this->get_longitude(), 
+        $plugin_admin = new WPGM_Admin(
+            $this->get_plugin_name(),
+            $this->get_version(),
+            $this->get_latitude(),
+            $this->get_longitude(),
             $this->get_default_post_types(),
             $this->gmap['key']
         );
 
         $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-        $this->loader->add_action( 
-            'wp_ajax_' . $this->plugin_name . '_address_search', 
-            $plugin_admin, 
-            'google_address_search' 
+        $this->loader->add_action(
+            'wp_ajax_' . $this->plugin_name . '_address_search',
+            $plugin_admin,
+            'google_address_search'
         );
 
-        $this->loader->add_action( 
-            'wp_ajax_nopriv_' . $this->plugin_name . '_address_search', 
-            $plugin_admin, 
-            'google_address_search' 
+        $this->loader->add_action(
+            'wp_ajax_nopriv_' . $this->plugin_name . '_address_search',
+            $plugin_admin,
+            'google_address_search'
         );
 
         add_action( 'init', array( $this, 'register_scripts' ) );
@@ -178,7 +178,7 @@ class WPGM {
     /*
      * Include_before_theme
      *
-     * This function will include core files before the theme's functions.php 
+     * This function will include core files before the theme's functions.php
      * file has been excecuted.
      */
     function include_before_theme() {
@@ -196,31 +196,31 @@ class WPGM {
      */
     private function define_public_hooks() {
 
-        $plugin_public = new WPGM_Public( 
-            $this->get_plugin_name(), 
-            $this->get_version(), 
-            $this->get_default_post_types() 
+        $plugin_public = new WPGM_Public(
+            $this->get_plugin_name(),
+            $this->get_version(),
+            $this->get_default_post_types()
         );
 
 
-        $this->loader->add_shortcode( 
-            $this->plugin_name, 
-            $plugin_public, 
-            $this->plugin_name . '_shortcode' 
+        $this->loader->add_shortcode(
+            $this->plugin_name,
+            $plugin_public,
+            $this->plugin_name . '_shortcode'
         );
 
 
-        $this->loader->add_action( 
-            'wp_ajax_' . $this->plugin_name . '_get_markers', 
-            $plugin_public, 
-            $this->plugin_name . '_get_markers' 
+        $this->loader->add_action(
+            'wp_ajax_' . $this->plugin_name . '_get_markers',
+            $plugin_public,
+            $this->plugin_name . '_get_markers'
         );
 
 
-        $this->loader->add_action( 
-            'wp_ajax_nopriv_' . $this->plugin_name . '_get_markers', 
-            $plugin_public, 
-            $this->plugin_name . '_get_markers' 
+        $this->loader->add_action(
+            'wp_ajax_nopriv_' . $this->plugin_name . '_get_markers',
+            $plugin_public,
+            $this->plugin_name . '_get_markers'
         );
     }
 
@@ -233,17 +233,17 @@ class WPGM {
      */
     private function define_metabox_hooks() {
 
-        $plugin_metaboxes = new WPGM_Admin_Metaboxes( 
-            $this->get_plugin_name(), 
-            $this->get_version(), 
-            $this->get_latitude(), 
-            $this->get_longitude(), 
-            $this->get_default_post_types() 
+        $plugin_metaboxes = new WPGM_Admin_Metaboxes(
+            $this->get_plugin_name(),
+            $this->get_version(),
+            $this->get_latitude(),
+            $this->get_longitude(),
+            $this->get_default_post_types()
         );
-        
+
         $this->loader->add_action( 'add_meta_boxes', $plugin_metaboxes, 'add_metaboxes' );
         $this->loader->add_action( 'save_post', $plugin_metaboxes, 'map_metabox_save' );
-    } 
+    }
 
 
     /**
@@ -254,21 +254,21 @@ class WPGM {
      */
     public function register_scripts() {
 
-        wp_register_script( 
-            'google-maps', 
-            'https://maps.googleapis.com/maps/api/js?v=' . $this->gmap['version'] . '&key=' . $this->gmap['key'], 
-            '', 
+        wp_register_script(
+            'google-maps',
+            'https://maps.googleapis.com/maps/api/js?v=' . $this->gmap['version'] . '&key=' . $this->gmap['key'],
+            '',
             $this->version
         );
 
-        wp_register_script( 
-            $this->plugin_name, 
-            plugin_dir_url( ( __FILE__ ) ) . 'js/' . $this->plugin_name . '.js', 
-            array( 
+        wp_register_script(
+            $this->plugin_name,
+            plugin_dir_url( ( __FILE__ ) ) . 'js/' . $this->plugin_name . '.js',
+            array(
                 'google-maps'
-            ), 
+            ),
             null,
-            true 
+            true
         );
     }
 
@@ -279,7 +279,6 @@ class WPGM {
      * @since    1.0.0
      */
     public function run() {
-
         $this->loader->run();
     }
 
@@ -292,7 +291,6 @@ class WPGM {
      * @return    string    The name of the plugin.
      */
     public function get_plugin_name() {
-
         return $this->plugin_name;
     }
 
@@ -300,11 +298,10 @@ class WPGM {
     /**
      * Retrieve latitude
      *
-     * @return latitude 
+     * @return latitude
      * @author Jérémy Levron levronjeremy@19h47.fr
      */
     public function get_latitude() {
-
         return $this->geographical_coordinates['latitude'];
     }
 
@@ -312,11 +309,10 @@ class WPGM {
     /**
      * Retrieve the longitude
      *
-     * @return longitude 
+     * @return longitude
      * @author Jérémy Levron levronjeremy@19h47.fr
      */
     public function get_longitude() {
-
         return $this->geographical_coordinates['longitude'];
     }
 
@@ -325,7 +321,6 @@ class WPGM {
      * Retrieve the default post types
      */
     public function get_default_post_types() {
-
         return $this->default_post_types;
     }
 
@@ -337,7 +332,6 @@ class WPGM {
      * @return    Plugin_Name_Loader    Orchestrates the hooks of the plugin
      */
     public function get_loader() {
-
         return $this->loader;
     }
 
@@ -349,7 +343,6 @@ class WPGM {
      * @return    string    The version number of the plugin.
      */
     public function get_version() {
-
         return $this->version;
     }
 }

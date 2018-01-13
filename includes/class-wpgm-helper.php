@@ -1,7 +1,7 @@
 <?php
 /**
  * Helpers
- * 
+ *
  * @link       http://www.19h47.fr
  * @since      1.0.0
  *
@@ -19,7 +19,7 @@ class WPGM_Helper {
      * Helper to generate our map markup
      *
      * @since  1.0.0
-     * @param  string   $size  
+     * @param  string   $size
      */
     static function map_markup( $size = array(), $city, $filter, $category = array(), $id = array() ) {
 
@@ -28,12 +28,10 @@ class WPGM_Helper {
 
         // Set defaults if empty
         if ( empty( $size['height'] ) ) {
-            
             $size['height'] = '200px';
         }
 
         if ( empty( $size['width'] ) ) {
-            
             $size['width'] = '100%';
         }
 
@@ -43,7 +41,7 @@ class WPGM_Helper {
 
         $output = '';
 
-        //Don't apply our default filter if we pass a size or if we're calling 
+        //Don't apply our default filter if we pass a size or if we're calling
         //our edit scren map
         if ( ! is_admin() && $filter === 'true' ) {
 
@@ -52,15 +50,15 @@ class WPGM_Helper {
             $output .= '<div class="l-container">';
             $output .= '<div class="row">';
             $output .= '<div class="col-xs-12">';
-        
+
             // Query arguments
-            $args = array( 
+            $args = array(
                 'post_type'         => 'event',
                 'post_status'       => 'publish',
                 'posts_per_page'    => -1
             );
 
-            $args_tax_query = array( 
+            $args_tax_query = array(
                 'relation' => 'AND',
                 array(
                     'taxonomy'  => 'city',
@@ -79,7 +77,6 @@ class WPGM_Helper {
             }
 
             if ( ! empty( $id ) ) {
-
                 $args['p'] = $id;
             }
 
@@ -88,23 +85,22 @@ class WPGM_Helper {
             $query = new WP_Query( $args );
 
             $posts = $query->posts;
-            
+
             // Instanciate arrays to populate it later
             $include_array = array();
             $date_days = array();
 
             // No need filter if there is only one post found
             if ( $query->found_posts > 1 ) {
-
                 foreach ( $posts as $post ) {
 
                     // For each post, retrieve all current terms
                     $terms = get_the_terms( $post, 'event_category' );
 
-                    // For each current terms 
+                    // For each current terms
                     foreach( $terms as $term ) {
-                        
-                        // Push in array the ID of current term to include it later 
+
+                        // Push in array the ID of current term to include it later
                         // in wp_dropdown_categories
                         array_push( $include_array, $term->term_id );
                     }
@@ -119,7 +115,7 @@ class WPGM_Helper {
 
                 //loop over each event
                 foreach ( $posts as $post ){
-                    
+
                     //get the meta you need form each event
                     $date_day = get_post_meta( $post->ID, '_date_day', true );
 
@@ -128,10 +124,9 @@ class WPGM_Helper {
                     if( ! empty( $date_day ) && ! in_array( $date_day, $date_days ) ) {
                         array_push( $date_days, $date_day );
                     }
-                    
                 };
 
-                
+
                 // For each value in array
                 foreach ( $date_days as $date_day ) {
 
@@ -162,23 +157,19 @@ class WPGM_Helper {
 
                 $output .= wp_dropdown_categories( $args );
             }
-            
+
             $output .= '</div></div></div></div>';
-            
         }
 
         if( is_admin() ) {
             // Return our map container markup
             return '<div id="map_canvas" style="height:' . esc_attr( $size['height'] ) . '; width:' . esc_attr( $size['width'] ) . ';"></div>';
-        } 
+        }
 
         // Return our map container markup
         return '<div class="js-map l-single-map__container">' . $output . '<div class="map_canvas" style="height:' . esc_attr( $size['height'] ) . '; width:' . esc_attr( $size['width'] ) . ';"></div></div>';
-
-
     }
 }
 
 
 endif; // class_exists check
-?>
