@@ -40,6 +40,7 @@ class WPGM {
      */
     protected $loader;
 
+
     /**
      * The unique identifier of this plugin.
      *
@@ -49,6 +50,7 @@ class WPGM {
      */
     protected $plugin_name;
 
+
     /**
      * The version of this plugin.
      *
@@ -57,6 +59,7 @@ class WPGM {
      * @var      string    $version    The current version of this plugin.
      */
     private $version;
+
 
     /**
      * Initialize the class and set its properties.
@@ -71,7 +74,7 @@ class WPGM {
         $this->version = '1.0.0';
 
         $this->gmap = array(
-            'version'   => '3.27',
+            'version'   => '3.29',
             'key'       => 'AIzaSyARcbB73-4Xmg9vSkA30EUxslzgvnRsrQY'
         );
 

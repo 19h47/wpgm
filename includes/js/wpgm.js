@@ -192,7 +192,7 @@ var WPGM = function (id) {
 
     var el = wrapper.getElementsByClassName('map_canvas')[0];
 
-    
+
     this.id = false;
     if(id) {
         this.id = id;
@@ -202,7 +202,7 @@ var WPGM = function (id) {
 
 	this.options = {
 		center: {
-            lat: 48.8534100, 
+            lat: 48.8534100,
             lng: 2.3488000
         },
         zoomControl: true,
@@ -212,8 +212,8 @@ var WPGM = function (id) {
 		rotateControl: false,
         scrollwheel: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        styles: map_styles, 
-        zoom: 12
+        styles: map_styles,
+        zoom: 12,
 	};
 
 	this.map = new google.maps.Map(el, this.options);
@@ -224,16 +224,16 @@ var WPGM = function (id) {
 
 	// Add control
 	var controlSelectCategory = wrapper.getElementsByClassName('js-control-event-category')[0];
-	
+
     $(el).append(controlSelectCategory);
 
 	this.ajax();
-	this.filter_markers(this.inputCheckbox); 
+	this.filter_markers(this.inputCheckbox);
 }
 
 
 WPGM.prototype = {
-    
+
     /**
      * WPGM.ajax methode
      */
@@ -245,7 +245,7 @@ WPGM.prototype = {
         if(this.id) {
             id = this.id;
 
-            console.log(this.id);
+            // console.log(this.id);
         }
 
         // console.log(wpgm_ajax.id);
@@ -256,7 +256,7 @@ WPGM.prototype = {
     		method : 'POST',
     		url: wpgm_ajax.ajax_url,
     		data: {
-    			'action': 'wpgm_get_markers', 
+    			'action': 'wpgm_get_markers',
     			'city': wpgm_ajax.city,
                 'category': wpgm_ajax.category,
                 'id': id
@@ -279,7 +279,7 @@ WPGM.prototype = {
     	var _this = this;
 
     	$.each(response.markers, function(i, marker) {
-    		_this.add_marker(marker);	
+    		_this.add_marker(marker);
     	});
 
     	_this.centerMap();
@@ -295,7 +295,7 @@ WPGM.prototype = {
     	$(e).on('change', function() {
     		var filters = [];
 
-            // On select, close all info windows  
+            // On select, close all info windows
             _this.closeAllInfoWindows();
 
             // Empty array
@@ -320,7 +320,7 @@ WPGM.prototype = {
     			var filters = [];
 
     			for (var i = 0; i < _this.markers.length; i++) {
-    				
+
     				// Set all markers visible
     			    _this.markers[i].setVisible(true);
     			}
@@ -329,7 +329,7 @@ WPGM.prototype = {
     			return;
     		}
 
-            // For each marker in markers   
+            // For each marker in markers
 
             for (var i = 0; i < _this.markers.length; i++) {
 
@@ -341,13 +341,13 @@ WPGM.prototype = {
 
                 // Loop throught all filter in marker
                 for (var y = 0; y < marker.filters.length; y++) {
-                    
+
                     // console.log(marker.filters[y]);
 
                     // For each index in filters
                     for (var u = 0; u < filters.length; u++) {
                         // console.log(filters[u]);
-                        
+
                         // if marker filter is egal to filter
                         if (marker.filters[y] == filters[u]) {
 
@@ -376,7 +376,7 @@ WPGM.prototype = {
      */
     closeAllInfoWindows: function(infowindows) {
         var _this = this;
-    	// For each infowindows in array
+    	// For each infoWindows in array
     	for (var i=0;i<_this.infoWindows.length;i++) {
     		// Close it
     	    _this.infoWindows[i].close();
@@ -394,7 +394,7 @@ WPGM.prototype = {
     	var _this = this;
     	var latlng = new google.maps.LatLng(marker.coordinates.latitude, marker.coordinates.longitude);
 
-    	// create marker 
+    	// create marker
     	var marker = new google.maps.Marker({
     		title: marker.title,
     		position: latlng,
@@ -406,23 +406,23 @@ WPGM.prototype = {
     		date: marker.date,
     		permalink: marker.permalink,
     		thumbnail: marker.thumbnail,
-    		icon: '/wp-content/themes/les48h/img/svg/marker-' + marker.category[0] + '.svg'
+    		icon: '/wp-content/themes/les48h/img/svg/marker-' + marker.category[0] + '.svg',
     	});
-    	
+
     	// Push this marker to array
     	this.markers.push(marker);
 
-    	var contentString = 
-            '<div class="l-info-marker"><a href="' 
-            + marker.permalink + 
-            '"><div class="l-info-marker__thumbnail" style="background-image: url(\'' 
-            + marker.thumbnail + 
-            '\');"></div>' 
-            + marker.date.join('') + 
-            '<p class="l-info-marker__title">' 
-            + marker.title + 
-            '</p><p class="Map-pin--blue color-blue-dark-grayish font-size-12 font-semibold uppercase no-margin">' 
-            + marker.address + 
+    	var contentString =
+            '<div class="l-info-marker"><a href="'
+            + marker.permalink +
+            '"><div class="l-info-marker__thumbnail" style="background-image: url(\''
+            + marker.thumbnail +
+            '\');"></div>'
+            + marker.date.join('') +
+            '<p class="l-info-marker__title">'
+            + marker.title +
+            '</p><p class="Map-pin--blue color-blue-dark-grayish font-size-12 font-semibold uppercase no-margin">'
+            + marker.address +
             '</p></a></div>';
 
     	// create info window
@@ -432,11 +432,11 @@ WPGM.prototype = {
     	});
 
     	// Push this infowindow to array
-    	this.infoWindows.push(infowindow); 
+    	this.infoWindows.push(infowindow);
 
     	// show info window when marker is hover
     	google.maps.event.addListener(marker, 'mouseover', function() {
-    		
+
     		// Close all close infoWindows
     		_this.closeAllInfoWindows(this.infowindow);
 
