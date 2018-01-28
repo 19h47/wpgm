@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Provides the markup for metabox
  *
@@ -8,7 +9,9 @@
  * @package    wpgm
  * @subpackage wpgm/includes
  */
+
 ?>
+
 <h4>
     <?php _e( 'Entrez une adresse postale pour l\'afficher sur la carte.', $this->plugin_name ) ?>
 </h4>

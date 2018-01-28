@@ -68,26 +68,26 @@ class WPGM_Admin {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( 'google-maps' );
-        
-        wp_enqueue_script( 
+
+        wp_enqueue_script(
             $this->plugin_name . '-admin',
-            plugin_dir_url( ( __FILE__ ) ) . 'js/' . $this->plugin_name . '-admin.js', 
+            plugin_dir_url( ( __FILE__ ) ) . 'js/' . $this->plugin_name . '-admin.js',
             array(
                 'google-maps'
-            ), 
-            $this->version, 
-            false 
+            ),
+            $this->version,
+            false
         );
 
-		wp_localize_script( 
+		wp_localize_script(
             $this->plugin_name . '-admin',
-            $this->plugin_name . '_ajax', 
-            array( 
-                'ajax_url' => admin_url( 'admin-ajax.php' ) 
-            ) 
+            $this->plugin_name . '_ajax',
+            array(
+                'ajax_url' => admin_url( 'admin-ajax.php' )
+            )
         );
 	}
-    
+
 
 	/**
      * AJAX callback to lookup an address on Google
@@ -96,36 +96,37 @@ class WPGM_Admin {
      * @return void
      */
     public function google_address_search() {
-        
+
         //Empty vars in case we return nothing
-        $latitude  = '';
+        $latitude = '';
         $longitude = '';
-        
+
         // Sanitize our input
         $address = sanitize_text_field( $_REQUEST['address'] );
-        
+
         $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $this->gmap_key;
-        
+
         //use the WordPress HTTP API to call the Google Maps API and get coordinates
-        $result = wp_remote_get( ( $url ) );
-        
+        $result = wp_remote_get( $url );
+
         if( ! is_wp_error( $result ) ) {
-            
+
             $json = json_decode( $result['body'] );
 
             //set lat/long for address from JSON response
-            $latitude  = $json->results[0]->geometry->location->lat;
+            $latitude = $json->results[0]->geometry->location->lat;
             $longitude = $json->results[0]->geometry->location->lng;
         }
 
+
         // Send back our coordinates
-        echo json_encode( 
-            array( 
-                'latitude'  => $latitude, 
-                'longitude' => $longitude 
-            ) 
+        echo json_encode(
+            array(
+                'latitude'  => $latitude,
+                'longitude' => $longitude
+            )
         );
-        
+
         die();
     }
 }

@@ -1,11 +1,11 @@
 jQuery(document).ready(function($) {
-    
+
     var el = document.getElementById('map_canvas');
-    
+
     if(!el) {
         return;
     }
-    
+
     var googlemaps = google.maps;
     var map;
     var marker;
@@ -19,18 +19,18 @@ jQuery(document).ready(function($) {
     map = new googlemaps.Map(el, {
         zoom: 4,
         center: defaultloc,
-        mapTypeId: googlemaps.MapTypeId.ROADMAP
+        mapTypeId: googlemaps.MapTypeId.ROADMAP,
     });
 
     // Set a single marker. Don't assign it a position yet.
     marker = new googlemaps.Marker({
         map: map,
-        draggable: true
+        draggable: true,
     });
 
     // Set our marker position
-    function wv_map_markers_set( lat, lon ) {
-        
+    function WPGM_map_markers_set( lat, lon ) {
+
         marker.setPosition(new googlemaps.LatLng(lat, lon));
         map.setCenter(marker.position);
         map.setZoom(16);
@@ -43,7 +43,7 @@ jQuery(document).ready(function($) {
     // Set our marker position if we have one already saved
     $('#map_canvas').ready(function(event){
         if (lat && lon) {
-            wv_map_markers_set(lat, lon);
+            WPGM_map_markers_set(lat, lon);
         }
     });
 
@@ -66,12 +66,12 @@ jQuery(document).ready(function($) {
             type : "post",
             dataType : "json",
             url : wpgm_ajax.ajax_url,
-            data : { 
-                "action": "wpgm_address_search", 
-                "address": address 
+            data : {
+                "action": "wpgm_address_search",
+                "address": address
             },
             success : function(response) {
-                wv_map_markers_set(response.latitude, response.longitude);
+                WPGM_map_markers_set(response.latitude, response.longitude);
             }
         });
     });

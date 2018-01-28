@@ -173,12 +173,13 @@ class WPGM_Public {
         );
 
          // ID
-         if ( isset( $_POST['id'] ) && ! empty( $_POST['id']) ) {
+         if ( isset( $_POST['id'] ) && ! empty( $_POST['id'] ) ) {
+            $args['post__in'] = array( $_POST['id'] );
+        }
 
-             $args['post__in'] = array( $_POST['id'] );
-         }
-
-         $args_tax_query = array( 'relation' => 'AND' );
+        $args_tax_query = array(
+            'relation' => 'AND'
+        );
 
         // City
         if ( isset( $_POST['city'] ) && ! empty( $_POST['city']) ) {
@@ -207,123 +208,129 @@ class WPGM_Public {
 
         $query = new WP_Query( $args );
 
-        if( $query->found_posts >= 1 ) {
-
-            while ( $query->have_posts() ) {
-
-                $query->the_post();
-
-                // Coordinate
-                $coordinates = get_post_meta( $query->post->ID, '_' . $this->plugin_name . '_details', true);
-
-                // print_r($coordinates);
-
-                // If post has latitude and longitude attach
-                if ( ! empty ( $coordinates ) ) {
-
-                    // Event category
-                    $categories = get_the_terms( $query->post->ID, 'event_category' );
-
-
-                    // If so, generate our map output
-                    if ( $coordinates['latitude'] && $coordinates['longitude'] && $categories ) {
-
-                        // Empty array to stock categories
-                        $post_categories = [];
-
-                        // Empty array to stock filters
-                        $filters = [];
-
-                        // Make an array of all categories
-                        foreach( $categories as $category ) {
-
-                            array_push( $post_categories, $category->slug );
-                            array_push( $filters, $category->slug );
-                        };
-
-                        // Date
-                        $day_format = "l";
-                        $hour_format = "h";
-
-                        // Date in category
-                        if( have_rows( 'dates', $query->post->ID ) ) {
-
-                            while ( have_rows( 'dates', $query->post->ID ) ) {
-                                the_row();
-
-                                $unixtimestamp = strtotime( get_sub_field( 'date' ) );
-
-                                $current_date = date_i18n( $day_format, $unixtimestamp );
-
-                                if( ! in_array( $current_date, $post_categories ) ) {
-
-                                    array_push( $filters, $current_date );
-                                }
-                            }
-                        }
-
-
-                        // Empty array for date output
-                        $post_dates = [];
-
-                        if( have_rows( 'dates', $query->post->ID ) ) {
-
-                            while ( have_rows( 'dates', $query->post->ID ) ) {
-
-                                the_row();
-
-                                // $date = get_sub_field( 'date' );
-
-                                $unixtimestamp = strtotime( get_sub_field( 'date' ) );
-
-                                $output  = '<span class="Date-event uppercase">';
-                                $output .= date_i18n( $day_format, $unixtimestamp );
-                                $output .= ' &#45;&nbsp;' . date_i18n( $hour_format, $unixtimestamp ) . 'h';
-                                $output .= '</span>';
-
-                                array_push( $post_dates, $output );
-                            }
-                        }
-
-
-                        // Thumbnail
-                        $thumbnail = get_the_post_thumbnail_url( $query->post->ID, 'medium' );
-
-                        // Permalink
-                        $permalink = get_the_permalink( $query->post->ID );
-
-                        // Marker informations
-                        $marker_infos = apply_filters(
-                            $this->plugin_name . '_get_gmap_marker_infos',
-                            array(
-                                'title'     => $query->post->post_title,
-                                'permalink' => $permalink,
-                                'content'   => $query->post->post_content,
-                                'date'      => $post_dates,
-                                'category'  => $post_categories,
-                                'filters'   => $filters,
-                                'address'   => get_wpgm_address( $query->post->ID ),
-                                'thumbnail' => $thumbnail
-                            )
-                        );
-
-                        $marker = array(
-                            'coordinates' => array(
-                                'latitude'  => $coordinates['latitude'],
-                                'longitude' => $coordinates['longitude']
-                            )
-                        );
-
-                        $marker = array_merge( $marker, $marker_infos );
-
-                        array_push( $list_markers, $marker );
-                    }
-                }
-            }
-            wp_reset_postdata();
+        if( $query->found_posts < 1 ) {
+            return;
         }
 
-        echo wp_json_encode( array( 'markers' => $list_markers ) );
+        while ( $query->have_posts() ) {
+
+            $query->the_post();
+
+            // Coordinates
+            $coordinates = get_post_meta( $query->post->ID, '_' . $this->plugin_name . '_details', true);
+
+            // print_r($coordinates);
+
+            // If post has latitude and longitude attach
+            if ( empty ( $coordinates ) ) {
+                continue;
+            }
+
+            // Event category
+            $categories = get_the_terms( $query->post->ID, 'event_category' );
+
+
+            // If so, generate our map output
+            if ( $coordinates['latitude'] && $coordinates['longitude'] && $categories ) {
+
+                // Empty array to stock categories
+                $post_categories = [];
+
+                // Empty array to stock filters
+                $filters = [];
+
+                // Make an array of all categories
+                foreach( $categories as $category ) {
+
+                    array_push( $post_categories, $category->slug );
+                    array_push( $filters, $category->slug );
+                };
+
+                // Date
+                $day_format = "l";
+                $hour_format = "h";
+
+                // Date in category
+                if( have_rows( 'dates', $query->post->ID ) ) {
+
+                    while ( have_rows( 'dates', $query->post->ID ) ) {
+                        the_row();
+
+                        $unixtimestamp = strtotime( get_sub_field( 'date' ) );
+
+                        $current_date = date_i18n( $day_format, $unixtimestamp );
+
+                        if( ! in_array( $current_date, $post_categories ) ) {
+
+                            array_push( $filters, $current_date );
+                        }
+                    }
+                }
+
+
+                // Empty array for date output
+                $post_dates = [];
+
+                if( have_rows( 'dates', $query->post->ID ) ) {
+
+                    while ( have_rows( 'dates', $query->post->ID ) ) {
+
+                        the_row();
+
+                        // $date = get_sub_field( 'date' );
+
+                        $unixtimestamp = strtotime( get_sub_field( 'date' ) );
+
+                        $output  = '<span class="Date-event uppercase">';
+                        $output .= date_i18n( $day_format, $unixtimestamp );
+                        $output .= ' &#45;&nbsp;' . date_i18n( $hour_format, $unixtimestamp ) . 'h';
+                        $output .= '</span>';
+
+                        array_push( $post_dates, $output );
+                    }
+                }
+
+
+                // Thumbnail
+                $thumbnail = get_the_post_thumbnail_url( $query->post->ID, 'medium' );
+
+                // Permalink
+                $permalink = get_the_permalink( $query->post->ID );
+
+                // Marker informations
+                $marker_infos = apply_filters(
+                    $this->plugin_name . '_get_gmap_marker_infos',
+                    array(
+                        'title'     => $query->post->post_title,
+                        'permalink' => $permalink,
+                        'content'   => $query->post->post_content,
+                        'date'      => $post_dates,
+                        'category'  => $post_categories,
+                        'filters'   => $filters,
+                        'address'   => get_wpgm_address( $query->post->ID ),
+                        'thumbnail' => $thumbnail
+                    )
+                );
+
+                $marker = array(
+                    'coordinates' => array(
+                        'latitude'  => $coordinates['latitude'],
+                        'longitude' => $coordinates['longitude']
+                    )
+                );
+
+                $marker = array_merge( $marker, $marker_infos );
+
+                array_push( $list_markers, $marker );
+            }
+        }
+        wp_reset_postdata();
+
+        echo wp_json_encode(
+            array(
+                'markers' => $list_markers
+            )
+        );
 
         wp_die();
     }
