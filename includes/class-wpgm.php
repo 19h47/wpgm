@@ -160,16 +160,20 @@ class WPGM {
             $this->gmap['key']
         );
 
-        $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+        $this->loader->add_action(
+            'admin_enqueue_scripts',
+            $plugin_admin,
+            'enqueue_scripts'
+        );
 
         $this->loader->add_action(
-            'wp_ajax_' . $this->plugin_name . '_address_search',
+            "wp_ajax_{$this->plugin_name}_address_search",
             $plugin_admin,
             'google_address_search'
         );
 
         $this->loader->add_action(
-            'wp_ajax_nopriv_' . $this->plugin_name . '_address_search',
+            "wp_ajax_nopriv_{$this->plugin_name}_address_search",
             $plugin_admin,
             'google_address_search'
         );
@@ -185,7 +189,6 @@ class WPGM {
      * file has been excecuted.
      */
     function include_before_theme() {
-
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'core/api.php';
     }
 
@@ -214,14 +217,14 @@ class WPGM {
 
 
         $this->loader->add_action(
-            'wp_ajax_' . $this->plugin_name . '_get_markers',
+            "wp_ajax_{$this->plugin_name}_get_markers",
             $plugin_public,
             $this->plugin_name . '_get_markers'
         );
 
 
         $this->loader->add_action(
-            'wp_ajax_nopriv_' . $this->plugin_name . '_get_markers',
+            "wp_ajax_nopriv_{$this->plugin_name}_get_markers",
             $plugin_public,
             $this->plugin_name . '_get_markers'
         );

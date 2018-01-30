@@ -11,6 +11,7 @@ npm-debug.log
 /src/prototype/
 /vendor/
 sftp-config.json.dev
+sftp-config.json.prod
 sftp-config.json
 *.sublime-workspace
 

@@ -4,10 +4,10 @@
  * Get WPGM key
  *
  * Retrieve the value of a given $key in WPGM plugin
- * 
+ *
  * @param  	boolean 				$post_id
- * @param  	string  				$value   
- * @return 	$meta[$value]          
+ * @param  	string  				$value
+ * @return 	$meta[$value]
  */
 function get_wpgm_key( $post_id = false, $key ) {
 	if( !$key ) {
@@ -25,8 +25,8 @@ function get_wpgm_key( $post_id = false, $key ) {
 
 
 /**
- * Get WPGM address 
- * 
+ * Get WPGM address
+ *
  * @param  	boolean 				$post_id
  * @return 	function get_wpgm_key
  */
@@ -44,6 +44,6 @@ function get_wpgm_address( $post_id = false ) {
 function the_wpgm_address( $post_id = false ) {
 
 	$key = get_wpgm_address( $post_id );
-	
-	echo $key;	                                      
+
+	echo $key;
 }
