@@ -1,4 +1,10 @@
-# wpgm
-WordPress Google Maps Plugin
+# Map
 
-Based on the WordPress [Plugin Boilerplate boilerplate](https://github.com/DevinVinson/WordPress-Plugin-Boilerplate)
+A __WordPress__ plugin that links posts to specific addresses with the help of the Google Maps API.
+
+![Map](assets/screenshot.png)
+
+## References
+
+- [WordPress plugin boilerplate](https://github.com/DevinVinson/WordPress-Plugin-Boilerplate)
+- [Google Maps API](https://developers.google.com/maps/)
