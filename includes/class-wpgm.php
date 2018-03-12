@@ -74,7 +74,7 @@ class WPGM {
         $this->version = '1.0.0';
 
         $this->gmap = array(
-            'version'   => '3.29',
+            'version'   => '3.32',
             'key'       => 'AIzaSyARcbB73-4Xmg9vSkA30EUxslzgvnRsrQY'
         );
 
@@ -262,9 +262,11 @@ class WPGM {
 
         wp_register_script(
             'google-maps',
-            'https://maps.googleapis.com/maps/api/js?v=' . $this->gmap['version'] . '&key=' . $this->gmap['key'],
+            "https://maps.googleapis.com/maps/api/js?v={$this->gmap['version']}&key={$this->gmap['key']}",
             '',
-            $this->version
+            $this->version,
+            null,
+            false
         );
 
         wp_register_script(
