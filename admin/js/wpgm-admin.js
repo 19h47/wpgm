@@ -15,6 +15,9 @@ jQuery(document).ready(function($) {
 
 	defaultloc = new googlemaps.LatLng(48.864716, 2.349014);
 
+	// Submit adress
+   	WPGMadressSearchSubmit();
+
 	// Set up our map canvas with default coordinates for the US
 	map = new googlemaps.Map(el, {
 		zoom: 4,
@@ -28,8 +31,29 @@ jQuery(document).ready(function($) {
 		draggable: true,
 	});
 
+	// Submit an address
+	function WPGMadressSearchSubmit() {
+		// console.log('WPGMadressSearchSubmit');
+
+	   	// Grab our form value
+	   	var address = $('#wpgm_address').val();
+
+	   	$.ajax({
+		   	type : 'post',
+		   	dataType : 'json',
+		   	url : wpgm_ajax.ajax_url,
+		   	data : {
+			   'action': 'wpgm_address_search',
+			   'address': address
+		   	},
+		   	success : function(response) {
+			   WPGMMapMarkersSet(response.latitude, response.longitude);
+		   	}
+	   	});
+	}
+
 	// Set our marker position
-	function WPGM_map_markers_set( lat, lon ) {
+	function WPGMMapMarkersSet(lat, lon) {
 
 		marker.setPosition(new googlemaps.LatLng(lat, lon));
 		map.setCenter(marker.position);
@@ -43,7 +67,7 @@ jQuery(document).ready(function($) {
 	// Set our marker position if we have one already saved
 	$('#map_canvas').ready(function(event){
 		if (lat && lon) {
-			WPGM_map_markers_set(lat, lon);
+			WPGMMapMarkersSet(lat, lon);
 		}
 	});
 
@@ -58,31 +82,8 @@ jQuery(document).ready(function($) {
 		// Stop the default submission from happening
 	   	event.preventDefault();
 
-   		adressSearchSubmit();
+   		WPGMadressSearchSubmit();
    });
-
-   adressSearchSubmit();
-
-   function adressSearchSubmit() {
-   		// console.log('adressSearchSubmit');
-
-	   	// Grab our form value
-	   	var address = $('#wpgm_address').val();
-
-	   	$.ajax({
-		   	type : 'post',
-		   	dataType : 'json',
-		   	url : wpgm_ajax.ajax_url,
-		   	data : {
-			   'action': 'wpgm_address_search',
-			   'address': address
-		   	},
-		   	success : function(response) {
-			   WPGM_map_markers_set(response.latitude, response.longitude);
-		   	}
-	   	});
-   	}
-
 
    // Clear our map and reset to original state
    $('#wpgm_address_clear').on('click', function( event ) {

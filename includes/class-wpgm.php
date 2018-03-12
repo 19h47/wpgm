@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    wpgm
  * @subpackage wvgm/includes
- * @author     Jérémy Levron levronjeremy@19h47.fr
+ * @author     Jérémy Levron <jeremylevron@19h47.fr>
  */
 
 class WPGM {
@@ -256,7 +256,7 @@ class WPGM {
      * Register scripts
      *
      * @access public
-     * @author Jérémy Levron levronjeremy@19h47.fr
+     * @author Jérémy Levron <jeremylevron@19h47.fr>
      */
     public function register_scripts() {
 
@@ -305,7 +305,7 @@ class WPGM {
      * Retrieve latitude
      *
      * @return latitude
-     * @author Jérémy Levron levronjeremy@19h47.fr
+     * @author Jérémy Levron <jeremylevron@19h47.fr>
      */
     public function get_latitude() {
         return $this->geographical_coordinates['latitude'];
@@ -316,7 +316,7 @@ class WPGM {
      * Retrieve the longitude
      *
      * @return longitude
-     * @author Jérémy Levron levronjeremy@19h47.fr
+     * @author Jérémy Levron <jeremylevron@19h47.fr>
      */
     public function get_longitude() {
         return $this->geographical_coordinates['longitude'];

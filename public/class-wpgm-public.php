@@ -18,7 +18,7 @@
  *
  * @package    wpgm
  * @subpackage wpgm/public
- * @author     Jérémy Levron levronjeremy@19h47.fr
+ * @author     Jérémy Levron <jeremylevron@19h47.fr>
  */
 class WPGM_Public {
 
@@ -181,8 +181,9 @@ class WPGM_Public {
             'relation' => 'AND'
         );
 
+
         // City
-        if ( isset( $_POST['city'] ) && ! empty( $_POST['city']) ) {
+        if ( isset( $_POST['city'] ) && ! empty( $_POST['city'] ) ) {
 
             $args_tax_query_city = array(
                 'taxonomy'  => 'city',
@@ -192,8 +193,9 @@ class WPGM_Public {
             array_push($args_tax_query, $args_tax_query_city);
         }
 
+
         // Category
-        if ( isset( $_POST['category'] ) && ! empty( $_POST['category']) ) {
+        if ( isset( $_POST['category'] ) && ! empty( $_POST['category'] ) ) {
             $args_tax_query_category = array(
                 'taxonomy'  => 'event_category',
                 'field'     => 'term_id',

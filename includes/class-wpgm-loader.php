@@ -20,7 +20,7 @@
  *
  * @package    wpgm
  * @subpackage wpgm/includes
- * @author     Jérémy Levron levronjeremy@19h47.fr
+ * @author     Jérémy Levron <jeremylevron@19h47.fr>
  */
 class WPGM_Loader {
 
