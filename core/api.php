@@ -10,13 +10,13 @@
  * @return 	$meta[$value]
  */
 function get_wpgm_key( $post_id = false, $key ) {
-	if( !$key ) {
+	if ( ! $key ) {
 		return;
 	}
 
 	$meta = get_post_meta( $post_id, '_wpgm_details', true );
 
-	if( empty( $meta ) ) {
+	if ( empty( $meta ) ) {
 		return;
 	}
 
@@ -28,7 +28,7 @@ function get_wpgm_key( $post_id = false, $key ) {
  * Get WPGM address
  *
  * @param  	boolean 				$post_id
- * @return 	function get_wpgm_key
+ * @return 	get_wpgm_key
  */
 function get_wpgm_address( $post_id = false ) {
 
@@ -39,7 +39,7 @@ function get_wpgm_address( $post_id = false ) {
 /**
  * The WPGM address
  *
- * @param  boolean 					$post_id
+ * @param  	boolean 				$post_id
  */
 function the_wpgm_address( $post_id = false ) {
 

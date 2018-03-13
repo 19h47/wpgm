@@ -4,6 +4,10 @@ A __WordPress__ plugin that links posts to specific addresses with the help of t
 
 ![Map](assets/screenshot.png)
 
+### Dependencies
+
+- Google Maps API 3.32
+
 ## References
 
 - [WordPress plugin boilerplate](https://github.com/DevinVinson/WordPress-Plugin-Boilerplate)

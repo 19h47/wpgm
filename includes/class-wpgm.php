@@ -13,6 +13,7 @@
  * @subpackage wpgm/includes
  */
 
+
 /**
  * The core plugin class.
  *
@@ -93,6 +94,7 @@ class WPGM {
 
         $this->include_before_theme();
     }
+
 
     /**
      * Load the required dependencies for this plugin.

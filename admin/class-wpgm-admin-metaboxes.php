@@ -7,8 +7,9 @@
  * @since      1.0.0
  *
  * @package    wpgm
- * @subpackage wpgm/includes
+ * @subpackage wpgm/admin
  */
+
 
 /**
  * The admin-specific functionality of the plugin.
@@ -17,7 +18,7 @@
  * enqueue the admin-specific stylesheet and JavaScript.
  *
  * @package    wpgm
- * @subpackage wpgm/includes
+ * @subpackage wpgm/admin
  * @author     Jérémy Levron <jeremylevron@19h47.fr>
  */
 class WPGM_Admin_Metaboxes {
@@ -35,9 +36,9 @@ class WPGM_Admin_Metaboxes {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @since      1.0.0
+	 * @access     private
+	 * @var        string    $version    The current version of this plugin.
 	 */
 	private $version;
 
@@ -45,7 +46,7 @@ class WPGM_Admin_Metaboxes {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since      1.0.0
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
@@ -61,10 +62,11 @@ class WPGM_Admin_Metaboxes {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpgm-helper.php';
 	}
 
+
     /**
      * Registers metaboxes with WordPress
      *
-     * @since  1.0
+     * @since  1.0.0
      * @return void
      */
     public function add_metaboxes() {
@@ -91,8 +93,8 @@ class WPGM_Admin_Metaboxes {
     /**
      * Output metabox markup
      *
-     * @since  1.0
-     * @return void
+     * @since   1.0.0
+     * @return  void
      */
     public function show_metaboxes() {
 
@@ -111,9 +113,9 @@ class WPGM_Admin_Metaboxes {
     /**
      * Save map metabox
      *
-     * @since  1.0
-     * @param  int      $post_id    The ID of the post we're saving
-     * @return int      $post_id    The ID of the post we're saving
+     * @since   1.0.0
+     * @param   int      $post_id    The ID of the post we're saving
+     * @return  int      $post_id    The ID of the post we're saving
      */
     public function map_metabox_save( $post_id ) {
 
@@ -147,9 +149,9 @@ class WPGM_Admin_Metaboxes {
     /**
      * Get and set our field defaults for metabox output
      *
-     * @since  1.0
-     * @param  int      $post   The post ID we're displaying our metabox on
-     * @return array            An array of fields
+     * @since   1.0.0
+     * @param   int      $post                          The post ID we're displaying our metabox on
+     * @return  array    map_metabox_get_fields         An array of fields
      */
     private function map_metabox_get_fields( $post_id = '' ) {
 
@@ -159,10 +161,10 @@ class WPGM_Admin_Metaboxes {
             return;
         }
 
+        // Input fields
         $fields['address'] = ! empty( $fields['address'] ) ? $fields['address'] : '';
         $fields['latitude'] = ! empty( $fields['latitude'] ) ? $fields['latitude'] : '';
         $fields['longitude'] = ! empty( $fields['longitude'] ) ? $fields['longitude'] : '';
-        // wp_die( var_dump( $fields ) );
 
         return apply_filters( 'map_metabox_get_fields', $fields );
     }
@@ -171,8 +173,8 @@ class WPGM_Admin_Metaboxes {
     /**
      * Sanitize metabox input fields
      *
-     * @since  1.0
-     * @return array  An array of sanitized fields
+     * @since   1.0.0
+     * @return  array   map_metabox_sanitize_fields     An array of sanitized fields
      */
     private function map_metabox_sanitize_fields() {
         $fields = array();

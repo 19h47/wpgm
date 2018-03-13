@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    wpgm
- * @subpackage wpgm/includes
+ * @subpackage wpgm/admin
  */
 
 /**
@@ -17,7 +17,7 @@
  * enqueue the admin-specific stylesheet and JavaScript.
  *
  * @package    wpgm
- * @subpackage wpgm/includes
+ * @subpackage wpgm/admin
  * @author     Jérémy Levron <jeremylevron@19h47.fr>
  */
 class WPGM_Admin {
@@ -31,6 +31,7 @@ class WPGM_Admin {
 	 */
 	private $plugin_name;
 
+
 	/**
 	 * The version of this plugin.
 	 *
@@ -39,6 +40,7 @@ class WPGM_Admin {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+
 
 	/**
 	 * Initialize the class and set its properties.
@@ -92,12 +94,12 @@ class WPGM_Admin {
 	/**
      * AJAX callback to lookup an address on Google
      *
-     * @since  1.0
+     * @since  1.0.0
      * @return void
      */
     public function google_address_search() {
 
-        //Empty vars in case we return nothing
+        // Empty vars in case we return nothing
         $latitude = '';
         $longitude = '';
 
@@ -106,7 +108,7 @@ class WPGM_Admin {
 
         $url = 'https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode( $address ) . '&key=' . $this->gmap_key;
 
-        //use the WordPress HTTP API to call the Google Maps API and get coordinates
+        // Use the WordPress HTTP API to call the Google Maps API and get coordinates
         $result = wp_remote_get( $url );
 
         if( ! is_wp_error( $result ) ) {
@@ -117,7 +119,6 @@ class WPGM_Admin {
             $latitude = $json->results[0]->geometry->location->lat;
             $longitude = $json->results[0]->geometry->location->lng;
         }
-
 
         // Send back our coordinates
         echo json_encode(
