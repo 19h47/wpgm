@@ -196,7 +196,7 @@ class WPGM_Public {
 				'field'     => 'slug',
 				'terms'     => $_POST['city']
 			);
-			array_push($args_tax_query, $args_tax_query_city);
+			array_push( $args_tax_query, $args_tax_query_city );
 		}
 
 

@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    wpgm
- * @subpackage wpgm/includes
+ * @subpackage wpgm/admin
  */
 
 ?>

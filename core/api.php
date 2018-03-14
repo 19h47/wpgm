@@ -6,7 +6,7 @@
  * Retrieve the value of a given $key in WPGM plugin
  *
  * @param  	boolean 				$post_id
- * @param  	string  				$value
+ * @param  	string  				$key
  * @return 	$meta[$value]
  */
 function get_wpgm_key( $post_id = false, $key ) {

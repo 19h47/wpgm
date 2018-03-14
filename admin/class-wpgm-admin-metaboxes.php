@@ -114,8 +114,9 @@ class WPGM_Admin_Metaboxes {
      * Save map metabox
      *
      * @since   1.0.0
-     * @param   int      $post_id    The ID of the post we're saving
-     * @return  int      $post_id    The ID of the post we're saving
+     * @param   int         $post_id       The ID of the post we're saving
+     * @return  arr         map_metabox_save
+     * @author  Jérémy Levron  <jeremylevron@19h47.fr>
      */
     public function map_metabox_save( $post_id ) {
 
@@ -150,8 +151,9 @@ class WPGM_Admin_Metaboxes {
      * Get and set our field defaults for metabox output
      *
      * @since   1.0.0
-     * @param   int      $post                          The post ID we're displaying our metabox on
-     * @return  array    map_metabox_get_fields         An array of fields
+     * @param   int         $post_id       The post ID we're displaying our metabox on
+     * @return  arr         map_metabox_get_fields         An array of fields
+     * @author  Jérémy Levron  <jeremylevron@19h47.fr>
      */
     private function map_metabox_get_fields( $post_id = '' ) {
 
@@ -174,9 +176,11 @@ class WPGM_Admin_Metaboxes {
      * Sanitize metabox input fields
      *
      * @since   1.0.0
-     * @return  array   map_metabox_sanitize_fields     An array of sanitized fields
+     * @return  arr   map_metabox_sanitize_fields     An array of sanitized fields
+     * @author  Jérémy Levron  <jeremylevron@19h47.fr>
      */
     private function map_metabox_sanitize_fields() {
+
         $fields = array();
 
         if ( ! $_POST[$this->plugin_name . '_address'] ) {
